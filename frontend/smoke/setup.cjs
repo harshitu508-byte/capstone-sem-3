@@ -1,0 +1,11 @@
+const { JSDOM } = require('jsdom');
+const dom = new JSDOM('<!doctype html><div id="root"></div>', { url: 'http://localhost:5173/', pretendToBeVisual: true });
+const w = dom.window;
+globalThis.window = w; globalThis.document = w.document; globalThis.localStorage = w.localStorage; globalThis.navigator = w.navigator;
+globalThis.HTMLElement = w.HTMLElement; globalThis.Node = w.Node; globalThis.Element = w.Element; globalThis.MutationObserver = w.MutationObserver;
+globalThis.getComputedStyle = w.getComputedStyle; globalThis.requestAnimationFrame = (f) => setTimeout(f, 0); globalThis.cancelAnimationFrame = clearTimeout;
+globalThis.ResizeObserver = class { observe() {} unobserve() {} disconnect() {} };
+w.ResizeObserver = globalThis.ResizeObserver;
+const realFetch = globalThis.fetch;
+globalThis.fetch = (u, o) => realFetch(String(u).startsWith('/') ? 'http://127.0.0.1:5000' + u : u, o);
+globalThis.IS_REACT_ACT_ENVIRONMENT = true;

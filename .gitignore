@@ -1,0 +1,6 @@
+node_modules
+.env
+dist
+smoke/out.cjs
+data
+*.log
